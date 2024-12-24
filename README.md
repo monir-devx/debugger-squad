@@ -1,9 +1,9 @@
 # debugger-squad
 
 ## Team Members
-- Shamim-Sorkar (Team Leader)
-- monir-devx
-- NasifUzZaman38
+- Shamim Sorkar (Team Leader)
+- Monir Hossain
+- Nasif Uz Zaman
 
 ## Mentor
 - NaimurRahmanBS-23
