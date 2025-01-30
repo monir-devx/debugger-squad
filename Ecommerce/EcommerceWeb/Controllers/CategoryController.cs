@@ -72,5 +72,17 @@ namespace EcommerceWeb.Controllers
             }
             return View(categoryFromDb);
         }
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeletePOST(int? id)
+        {
+            Category? obj = _db.Categories.Find(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            _db.Categories.Remove(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
     }
 }
