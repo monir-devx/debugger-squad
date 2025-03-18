@@ -3,8 +3,9 @@ using Ecommerce.DataAccess.Data;
 using Ecommerce.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EcommerceWeb.Controllers
+namespace EcommerceWeb.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
 
