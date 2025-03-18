@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bulky.DataAccess.Repository.IRepository
+namespace Ecommerce.DataAccess.Repository.IRepository
 {
     public interface ICategoryRepository : IRepository<Category>
     {
