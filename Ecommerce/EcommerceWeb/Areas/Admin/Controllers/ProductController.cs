@@ -2,6 +2,7 @@
 using Ecommerce.DataAccess.Data;
 using Ecommerce.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EcommerceWeb.Areas.Admin.Controllers
 {
@@ -21,6 +22,16 @@ namespace EcommerceWeb.Areas.Admin.Controllers
 
         public IActionResult Create()
         {
+            IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category
+                .GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                });
+
+            ViewBag.CategoryList = CategoryList;
+            //ViewData["CategoryList"] = CategoryList;
+            //We can use ViewBag or ViewData or TempData or View Models, we will use View Models. Now teporarily, we are using ViewBag
             return View();
         }
         [HttpPost]
