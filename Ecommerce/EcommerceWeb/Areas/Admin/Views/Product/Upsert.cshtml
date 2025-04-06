@@ -11,24 +11,34 @@
     <div class="card-body p-4">
         <form method="post" class="row" enctype="multipart/form-data">
             <input asp-for="Product.Id" hidden />
-            <partial name="_ProductForm" model="Model" />
-            <div class="row pt-2">
-                <div class="col-6 col-md-3">
-                    @if (Model.Product.Id != 0)
-                    {
-                        <button type="submit" class="btn btn-primary form-control">Update</button>
-                    }
-                    else
-                    {
-                        <button type="submit" class="btn btn-primary form-control">Create</button>
-                    }
+            <div class="row">
+                <div class="col-10">
+                    <partial name="_ProductForm" model="Model" />
+                    <div class="row pt-2">
+                        <div class="col-6 col-md-3">
+                            @if (Model.Product.Id != 0)
+                            {
+                                <button type="submit" class="btn btn-primary form-control">Update</button>
+                            }
+                            else
+                            {
+                                <button type="submit" class="btn btn-primary form-control">Create</button>
+                            }
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <a asp-controller="Product" asp-action="Index" class="btn btn-outline-primary border form-control">
+                                Back to List
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-6 col-md-3">
-                    <a asp-controller="Product" asp-action="Index" class="btn btn-outline-primary border form-control">
-                        Back to List
-                    </a>
+
+                <div class="col-2">
+                    <img src="@Model.Product.ImageUrl"
+                         style="width: 100%; border-radius: 5px; border: 1px solid #bbb9b9;" />
                 </div>
             </div>
+            
         </form>
     </div>
 </div>
