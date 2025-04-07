@@ -53,31 +53,55 @@ namespace EcommerceWeb.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 string wwwRootPath = _webHostEnvironment.WebRootPath;
+                string targetDirectory = Path.Combine(wwwRootPath, @"images\product");
+
+                // Ensure target directory ends with a directory separator
+                if (!targetDirectory.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                {
+                    targetDirectory += Path.DirectorySeparatorChar;
+                }
+
                 if (file != null)
                 {
+                    // Generate a unique file name for the uploaded image
                     string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                    string productPath = Path.Combine(wwwRootPath, @"images\product");
 
+                    // Handle old image deletion securely
                     if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
                     {
-                        //delete the old image
-                        var oldImagePath =
-                            Path.Combine(wwwRootPath, productVM.Product.ImageUrl.TrimStart('\\'));
+                        string oldImagePath = Path.Combine(wwwRootPath, productVM.Product.ImageUrl.TrimStart('\\'));
 
-                        if (System.IO.File.Exists(oldImagePath))
+                        // Resolve full path and validate it
+                        string canonicalOldPath = Path.GetFullPath(oldImagePath);
+
+                        // Ensure the old image path is inside the target directory
+                        if (canonicalOldPath.StartsWith(targetDirectory, StringComparison.Ordinal))
                         {
-                            System.IO.File.Delete(oldImagePath);
+                            if (System.IO.File.Exists(canonicalOldPath))
+                            {
+                                System.IO.File.Delete(canonicalOldPath);
+                            }
+                        }
+                        else
+                        {
+                            // Log or throw an exception if the old path is outside the target directory
+                            TempData["error"] = "The image path is invalid.";
+                            return View(productVM);
                         }
                     }
 
-                    using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
+                    // Save the new image file securely
+                    string newImagePath = Path.Combine(targetDirectory, fileName);
+                    using (var fileStream = new FileStream(newImagePath, FileMode.Create))
                     {
                         file.CopyTo(fileStream);
                     }
 
-                    productVM.Product.ImageUrl = @"\images\product\" + fileName;
+                    // Store the relative image URL
+                    productVM.Product.ImageUrl = Path.Combine(@"\images\product", fileName);
                 }
 
+                // Add or update the product in the database
                 if (productVM.Product.Id == 0)
                 {
                     _unitOfWork.Product.Add(productVM.Product);
@@ -92,6 +116,7 @@ namespace EcommerceWeb.Areas.Admin.Controllers
             }
             else
             {
+                // Reload the category list if the model validation fails
                 productVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.Name,
