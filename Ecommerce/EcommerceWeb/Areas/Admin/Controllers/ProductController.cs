@@ -136,6 +136,7 @@ namespace EcommerceWeb.Areas.Admin.Controllers
             return Json(new { data = objProductList });
         }
 
+        [HttpDelete]
         public IActionResult Delete(int? id)
         {
             var productToBeDeleted = _unitOfWork.Product.Get(u => u.Id == id);
@@ -156,7 +157,7 @@ namespace EcommerceWeb.Areas.Admin.Controllers
             _unitOfWork.Product.Remove(productToBeDeleted);
             _unitOfWork.Save();
 
-            return Json(new { success = true, message = "Product has been successfully deleted." });
+            return Json(new { success = true, message = "Product deleted successfully" });
         }
 
         #endregion
