@@ -3,7 +3,17 @@ using Ecommerce.DataAccess.Repository.IRepository;
 using Ecommerce.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 
+// Setup builder
 var builder = WebApplication.CreateBuilder(args);
+var env = builder.Environment;
+
+// Load configuration files: base, environment-specific, and developer-local (optional)
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true) // Developer-specific (gitignored)
+    .AddEnvironmentVariables();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
