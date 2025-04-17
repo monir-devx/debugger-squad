@@ -1,11 +1,47 @@
-# Ignore Visual Studio files
-.vs/
-*.user
-*.suo
-
-# Ignore build output directories
+#########################
+# Build Artifacts
+#########################
 bin/
 obj/
+artifacts/
+*.dll
+*.exe
+*.pdb
 
-# Ignore other typical Visual Studio files
+#########################
+# User & IDE Settings
+#########################
+.vs/
 .vscode/
+.idea/
+*.user
+*.suo
+*.sln.docstates
+
+#########################
+# Local Config Overrides
+#########################
+**/appsettings.Local.json
+secrets.json
+
+#########################
+# Logs & Databases
+#########################
+*.log
+logs/
+*.db
+*.sqlite
+
+#########################
+# Test Outputs
+#########################
+TestResults/
+*.coverage
+*.coveragexml
+
+#########################
+# OS-Specific Files
+#########################
+.DS_Store
+Thumbs.db
+ehthumbs.db
