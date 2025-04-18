@@ -13,17 +13,17 @@ namespace Ecommerce.DataAccess.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
-        protected override void OnModelCreating(ModelBuilder modelBuilder) //Overriding given function
+        protected override void OnModelCreating(ModelBuilder builder) //Overriding given function
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(builder);
 
-            modelBuilder.Entity<Category>().HasData(
+            builder.Entity<Category>().HasData(
                 new Category { Id = 1, Name = "Action", DisplayOrder = 1 },
                 new Category { Id = 2, Name = "SciFi", DisplayOrder = 2 },
                 new Category { Id = 3, Name = "History", DisplayOrder = 3 }
                 );
 
-            modelBuilder.Entity<Product>().HasData(
+            builder.Entity<Product>().HasData(
                 new Product
                 {
                     Id = 1,

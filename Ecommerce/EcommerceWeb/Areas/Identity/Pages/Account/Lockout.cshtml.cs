@@ -20,6 +20,8 @@ namespace EcommerceWeb.Areas.Identity.Pages.Account
         /// </summary>
         public void OnGet()
         {
+            // This method is intentionally left empty.
+            // The Lockout page displays static content only and requires no server-side logic.
         }
     }
 }

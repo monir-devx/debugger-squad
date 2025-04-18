@@ -52,6 +52,8 @@ namespace EcommerceWeb.Areas.Identity.Pages.Account
 
         public void OnGet()
         {
+            // This method is intentionally left empty because it only serves to display the Resend Email Confirmation page.
+            // Further logic can be added here if needed in the future, such as handling specific conditions or actions on GET request.
         }
 
         public async Task<IActionResult> OnPostAsync()

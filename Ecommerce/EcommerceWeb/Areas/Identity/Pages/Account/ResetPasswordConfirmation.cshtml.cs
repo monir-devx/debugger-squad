@@ -20,6 +20,8 @@ namespace EcommerceWeb.Areas.Identity.Pages.Account
         /// </summary>
         public void OnGet()
         {
+            // This method is intentionally left empty because it simply serves to display the Reset Password Confirmation page.
+            // Additional logic can be added here if needed, such as logging or further user interaction.
         }
     }
 }

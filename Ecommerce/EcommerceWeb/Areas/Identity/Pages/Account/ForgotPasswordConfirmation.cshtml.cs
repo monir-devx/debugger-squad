@@ -20,6 +20,8 @@ namespace EcommerceWeb.Areas.Identity.Pages.Account
         /// </summary>
         public void OnGet()
         {
+            // This method is intentionally left empty.
+            // The ForgotPasswordConfirmation page does not require any server-side logic.
         }
     }
 }
