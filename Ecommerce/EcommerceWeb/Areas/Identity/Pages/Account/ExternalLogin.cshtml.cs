@@ -23,6 +23,8 @@ namespace EcommerceWeb.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel
     {
+        private const string LoginPage = "./Login";
+
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IUserStore<IdentityUser> _userStore;
@@ -86,7 +88,7 @@ namespace EcommerceWeb.Areas.Identity.Pages.Account
             public string Email { get; set; }
         }
         
-        public IActionResult OnGet() => RedirectToPage("./Login");
+        public IActionResult OnGet() => RedirectToPage(LoginPage);
 
         public IActionResult OnPost(string provider, string returnUrl = null)
         {
@@ -102,13 +104,13 @@ namespace EcommerceWeb.Areas.Identity.Pages.Account
             if (remoteError != null)
             {
                 ErrorMessage = $"Error from external provider: {remoteError}";
-                return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
+                return RedirectToPage(LoginPage, new { ReturnUrl = returnUrl });
             }
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
                 ErrorMessage = "Error loading external login information.";
-                return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
+                return RedirectToPage(LoginPage, new { ReturnUrl = returnUrl });
             }
 
             // Sign in the user with this external login provider if the user already has a login.
@@ -146,7 +148,7 @@ namespace EcommerceWeb.Areas.Identity.Pages.Account
             if (info == null)
             {
                 ErrorMessage = "Error loading external login information during confirmation.";
-                return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
+                return RedirectToPage(LoginPage, new { ReturnUrl = returnUrl });
             }
 
             if (ModelState.IsValid)
@@ -197,7 +199,7 @@ namespace EcommerceWeb.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private IdentityUser CreateUser()
+        private static IdentityUser CreateUser()
         {
             try
             {

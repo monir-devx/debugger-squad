@@ -89,7 +89,7 @@ namespace EcommerceWeb.Areas.Identity.Pages.Account
 
             var result = await _signInManager.TwoFactorRecoveryCodeSignInAsync(recoveryCode);
 
-            var userId = await _userManager.GetUserIdAsync(user);
+            //var userId = await _userManager.GetUserIdAsync(user);
 
             if (result.Succeeded)
             {

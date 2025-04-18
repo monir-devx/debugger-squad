@@ -14,16 +14,16 @@ using Microsoft.Extensions.Logging;
 
 namespace EcommerceWeb.Areas.Identity.Pages.Account
 {
-    public class LoginWith2faModel : PageModel
+    public class LoginWith2FaModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly ILogger<LoginWith2faModel> _logger;
+        private readonly ILogger<LoginWith2FaModel> _logger;
 
-        public LoginWith2faModel(
+        public LoginWith2FaModel(
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
-            ILogger<LoginWith2faModel> logger)
+            ILogger<LoginWith2FaModel> logger)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -108,7 +108,7 @@ namespace EcommerceWeb.Areas.Identity.Pages.Account
 
             var result = await _signInManager.TwoFactorAuthenticatorSignInAsync(authenticatorCode, rememberMe, Input.RememberMachine);
 
-            var userId = await _userManager.GetUserIdAsync(user);
+            //var userId = await _userManager.GetUserIdAsync(user);
 
             if (result.Succeeded)
             {
