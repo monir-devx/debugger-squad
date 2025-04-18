@@ -17,16 +17,13 @@ namespace EcommerceWeb.Areas.Identity.Pages.Account
     public class LoginWith2FaModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<LoginWith2FaModel> _logger;
 
         public LoginWith2FaModel(
             SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager,
             ILogger<LoginWith2FaModel> logger)
         {
             _signInManager = signInManager;
-            _userManager = userManager;
             _logger = logger;
         }
 
@@ -107,8 +104,6 @@ namespace EcommerceWeb.Areas.Identity.Pages.Account
             var authenticatorCode = Input.TwoFactorCode.Replace(" ", string.Empty).Replace("-", string.Empty);
 
             var result = await _signInManager.TwoFactorAuthenticatorSignInAsync(authenticatorCode, rememberMe, Input.RememberMachine);
-
-            //var userId = await _userManager.GetUserIdAsync(user);
 
             if (result.Succeeded)
             {
