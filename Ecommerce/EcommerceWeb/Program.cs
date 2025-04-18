@@ -3,7 +3,7 @@ using Ecommerce.DataAccess.Repository.IRepository;
 using Ecommerce.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using BulkyBook.Utility;
+using Ecommerce.Utility;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
 // Setup builder

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BulkyBook.Utility
+namespace Ecommerce.Utility
 {
     public class EmailSender : IEmailSender
     {
