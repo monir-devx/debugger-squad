@@ -2,34 +2,37 @@
 
 @*<div asp-validation-summary="ModelOnly"></div>*@
 <div class="form-floating py-2 col-12">
-    <input asp-for="Name" class="form-control border-0 shadow" />
-    <label asp-for="Name" class="ms-2"></label>
+    <input asp-for="Name" class="form-control border-0 shadow" id="Name" />
+    <label for="Name" class="ms-2">Name</label>
     <span asp-validation-for="Name" class="text-danger"></span>
 </div>
 
 <div class="form-floating py-2 col-12">
-    <input asp-for="PhoneNumber" class="form-control border-0 shadow" />
-    <label asp-for="PhoneNumber" class="ms-2"></label>
+    <input asp-for="PhoneNumber" class="form-control border-0 shadow" id="PhoneNumber" />
+    <label for="PhoneNumber" class="ms-2">Phone Number</label>
     <span asp-validation-for="PhoneNumber" class="text-danger"></span>
 </div>
+
 <div class="form-floating py-2 col-12">
-    <input asp-for="StreetAddress" class="form-control border-0 shadow" />
-    <label asp-for="StreetAddress" class="ms-2"></label>
+    <input asp-for="StreetAddress" class="form-control border-0 shadow" id="StreetAddress" />
+    <label for="StreetAddress" class="ms-2">Street Address</label>
     <span asp-validation-for="StreetAddress" class="text-danger"></span>
 </div>
+
 <div class="form-floating py-2 col-12">
-    <input asp-for="City" class="form-control border-0 shadow" />
-    <label asp-for="City" class="ms-2"></label>
+    <input asp-for="City" class="form-control border-0 shadow" id="City" />
+    <label for="City" class="ms-2">City</label>
     <span asp-validation-for="City" class="text-danger"></span>
 </div>
+
 <div class="form-floating py-2 col-12">
-    <input asp-for="State" class="form-control border-0 shadow" />
-    <label asp-for="State" class="ms-2"></label>
+    <input asp-for="State" class="form-control border-0 shadow" id="State" />
+    <label for="State" class="ms-2">State</label>
     <span asp-validation-for="State" class="text-danger"></span>
 </div>
 
 <div class="form-floating py-2 col-12">
-    <input asp-for="PostalCode" class="form-control border-0 shadow" />
-    <label asp-for="PostalCode" class="ms-2"></label>
+    <input asp-for="PostalCode" class="form-control border-0 shadow" id="PostalCode" />
+    <label for="PostalCode" class="ms-2">Postal Code</label>
     <span asp-validation-for="PostalCode" class="text-danger"></span>
 </div>
