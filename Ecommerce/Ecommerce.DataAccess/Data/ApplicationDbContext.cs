@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace Ecommerce.DataAccess.Data
 {
@@ -12,6 +13,7 @@ namespace Ecommerce.DataAccess.Data
         }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Company> Companies { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         protected override void OnModelCreating(ModelBuilder builder) //Overriding given function
         {
@@ -21,7 +23,20 @@ namespace Ecommerce.DataAccess.Data
                 new Category { Id = 1, Name = "Action", DisplayOrder = 1 },
                 new Category { Id = 2, Name = "SciFi", DisplayOrder = 2 },
                 new Category { Id = 3, Name = "History", DisplayOrder = 3 }
-                );
+            );
+
+            builder.Entity<Company>().HasData(
+               new Company
+               {
+                   Id = 1,
+                   Name = "Tech Solution",
+                   StreetAddress = "123 Tech St",
+                   City = "Tech City",
+                   PostalCode = "12121",
+                   State = "IL",
+                   PhoneNumber = "6669990000"
+               }
+               );
 
             builder.Entity<Product>().HasData(
                 new Product
