@@ -40,6 +40,11 @@ namespace EcommerceWeb.Areas.Customer.Controllers
         [Authorize]
         public IActionResult Details(ShoppingCart shoppingCart)
         {
+            if (!ModelState.IsValid)
+            {
+                TempData["error"] = "There was an error with your submission. Please check the form and try again.";
+                return View(shoppingCart);
+            }
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
             shoppingCart.ApplicationUserId = userId;

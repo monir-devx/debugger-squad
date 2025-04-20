@@ -44,7 +44,7 @@ namespace EcommerceWeb.Areas.Customer.Controllers
         }
 
         public IActionResult Plus(int cartId)
-        {
+        {      
             var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId);
             cartFromDb.Count += 1;
             _unitOfWork.ShoppingCart.Update(cartFromDb);
@@ -53,7 +53,7 @@ namespace EcommerceWeb.Areas.Customer.Controllers
         }
 
         public IActionResult Minus(int cartId)
-        {
+        {           
             var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId);
             if (cartFromDb.Count <= 1)
             {
@@ -78,7 +78,7 @@ namespace EcommerceWeb.Areas.Customer.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private double GetPriceBasedOnQuantity(ShoppingCart shoppingCart)
+        private static double GetPriceBasedOnQuantity(ShoppingCart shoppingCart)
         {
             if (shoppingCart.Count <= 50)
             {

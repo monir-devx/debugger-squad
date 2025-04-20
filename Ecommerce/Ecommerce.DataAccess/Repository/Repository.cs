@@ -50,11 +50,11 @@ namespace Ecommerce.DataAccess.Repository
                     query = query.Include(includeProp);
                 }
             }
-            //return query.FirstOrDefault() ?? throw new InvalidOperationException("No entity found.");
+
             return query.FirstOrDefault(); // Removed the throw to handle null return in ShoppingCart.Get()
         }
 
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties = null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
             if (filter != null)
