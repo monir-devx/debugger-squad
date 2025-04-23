@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Security.Claims;
 using Ecommerce.DataAccess.Repository.IRepository;
 using Ecommerce.Models;
+using Ecommerce.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -57,16 +58,18 @@ namespace EcommerceWeb.Areas.Customer.Controllers
                 // Increment item count if the product already exists in the cart
                 cartFromDb.Count += shoppingCart.Count;
                 _unitOfWork.ShoppingCart.Update(cartFromDb);
+                _unitOfWork.Save();
             }
             else
             {
                 // Insert new product entry into the shopping cart
                 _unitOfWork.ShoppingCart.Add(shoppingCart);
+                _unitOfWork.Save();
+                HttpContext.Session.SetInt32(SD.SessionCart,
+                _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId).Count());
             }
 
             TempData["success"] = "Cart updated successfully";
-            _unitOfWork.Save();
-
 
             return RedirectToAction(nameof(Index));
         }
