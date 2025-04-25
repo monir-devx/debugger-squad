@@ -32,12 +32,15 @@ namespace Ecommerce.DataAccess.DbInitializer
             // Apply migrations at runtime if any are pending
             try
             {
-                if (_db.Database.GetPendingMigrations().Count() > 0)
+                if (_db.Database.GetPendingMigrations().Any())
                 {
                     _db.Database.Migrate();
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception)
+            {
+                // Ignoring exception as migrations are optional during startup.
+            }
 
             // Create roles if they do not already exist
             if (!_roleManager.RoleExistsAsync(SD.Role_Customer).GetAwaiter().GetResult())
@@ -67,7 +70,6 @@ namespace Ecommerce.DataAccess.DbInitializer
 
             }
 
-            return;
         }
     }
 }

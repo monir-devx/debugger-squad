@@ -12,7 +12,7 @@ namespace Ecommerce.DataAccess.Repository
 {
     public class OrderHeaderRepository : Repository<OrderHeader>, IOrderHeaderRepository
     {
-        private ApplicationDbContext _db;
+        private readonly ApplicationDbContext _db;
         public OrderHeaderRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
@@ -39,6 +39,10 @@ namespace Ecommerce.DataAccess.Repository
         public void UpdateStripePaymentID(int id, string sessionId, string paymentIntentId)
         {
             var orderFromDb = _db.OrderHeaders.FirstOrDefault(u => u.Id == id);
+            if (orderFromDb == null)
+            {
+                return; // Optional: log this situation or throw an exception
+            }
             if (!string.IsNullOrEmpty(sessionId))
             {
                 orderFromDb.SessionId = sessionId;

@@ -12,7 +12,7 @@ namespace Ecommerce.DataAccess.Repository
 {
     public class OrderDetailRepository : Repository<OrderDetail>, IOrderDetailRepository
     {
-        private ApplicationDbContext _db;
+        private readonly ApplicationDbContext _db;
         public OrderDetailRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;

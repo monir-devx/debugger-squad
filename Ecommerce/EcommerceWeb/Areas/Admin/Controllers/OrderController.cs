@@ -15,6 +15,9 @@ namespace EcommerceWeb.Areas.Admin.Controllers
     [Authorize]
     public class OrderController : Controller
     {
+        private const string TempDataSuccessKey = "Success";
+        private const string ApplicationUserProperty = "ApplicationUser";
+
         private readonly IUnitOfWork _unitOfWork;
         [BindProperty]
         public OrderVM OrderVM { get; set; }
@@ -30,9 +33,14 @@ namespace EcommerceWeb.Areas.Admin.Controllers
 
         public IActionResult Details(int orderId)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             OrderVM = new()
             {
-                OrderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == orderId, includeProperties: "ApplicationUser"),
+                OrderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == orderId, includeProperties: ApplicationUserProperty),
                 OrderDetail = _unitOfWork.OrderDetail.GetAll(u => u.OrderHeaderId == orderId, includeProperties: "Product")
             };
 
@@ -43,6 +51,11 @@ namespace EcommerceWeb.Areas.Admin.Controllers
         [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee)]
         public IActionResult UpdateOrderDetail()
         {
+            if (!ModelState.IsValid)
+            {
+                TempData["Error"] = "Invalid order details!";
+                return View(OrderVM);
+            }
             var orderHeaderFromDb = _unitOfWork.OrderHeader.Get(u => u.Id == OrderVM.OrderHeader.Id);
             orderHeaderFromDb.Name = OrderVM.OrderHeader.Name;
             orderHeaderFromDb.PhoneNumber = OrderVM.OrderHeader.PhoneNumber;
@@ -61,7 +74,7 @@ namespace EcommerceWeb.Areas.Admin.Controllers
             _unitOfWork.OrderHeader.Update(orderHeaderFromDb);
             _unitOfWork.Save();
 
-            TempData["Success"] = "Order Details Updated Successfully.";
+            TempData[TempDataSuccessKey] = "Order Details Updated Successfully.";
 
 
             return RedirectToAction(nameof(Details), new { orderId = orderHeaderFromDb.Id });
@@ -73,7 +86,7 @@ namespace EcommerceWeb.Areas.Admin.Controllers
         {
             _unitOfWork.OrderHeader.UpdateStatus(OrderVM.OrderHeader.Id, SD.StatusInProcess);
             _unitOfWork.Save();
-            TempData["Success"] = "Order Details Updated Successfully.";
+            TempData[TempDataSuccessKey] = "Order Details Updated Successfully.";
             return RedirectToAction(nameof(Details), new { orderId = OrderVM.OrderHeader.Id });
         }
 
@@ -94,7 +107,7 @@ namespace EcommerceWeb.Areas.Admin.Controllers
 
             _unitOfWork.OrderHeader.Update(orderHeader);
             _unitOfWork.Save();
-            TempData["Success"] = "Order Shipped Successfully.";
+            TempData[TempDataSuccessKey] = "Order Shipped Successfully.";
             return RedirectToAction(nameof(Details), new { orderId = OrderVM.OrderHeader.Id });
         }
 
@@ -114,7 +127,7 @@ namespace EcommerceWeb.Areas.Admin.Controllers
                 };
 
                 var service = new RefundService();
-                Refund refund = service.Create(options);
+                service.Create(options);
 
                 _unitOfWork.OrderHeader.UpdateStatus(orderHeader.Id, SD.StatusCancelled, SD.StatusRefunded);
             }
@@ -123,7 +136,7 @@ namespace EcommerceWeb.Areas.Admin.Controllers
                 _unitOfWork.OrderHeader.UpdateStatus(orderHeader.Id, SD.StatusCancelled, SD.StatusCancelled);
             }
             _unitOfWork.Save();
-            TempData["Success"] = "Order Cancelled Successfully.";
+            TempData[TempDataSuccessKey] = "Order Cancelled Successfully.";
             return RedirectToAction(nameof(Details), new { orderId = OrderVM.OrderHeader.Id });
 
         }
@@ -133,7 +146,7 @@ namespace EcommerceWeb.Areas.Admin.Controllers
         public IActionResult Details_PAY_NOW()
         {
             OrderVM.OrderHeader = _unitOfWork.OrderHeader
-                .Get(u => u.Id == OrderVM.OrderHeader.Id, includeProperties: "ApplicationUser");
+                .Get(u => u.Id == OrderVM.OrderHeader.Id, includeProperties: ApplicationUserProperty);
             OrderVM.OrderDetail = _unitOfWork.OrderDetail
                 .GetAll(u => u.OrderHeaderId == OrderVM.OrderHeader.Id, includeProperties: "Product");
 
@@ -175,6 +188,11 @@ namespace EcommerceWeb.Areas.Admin.Controllers
 
         public IActionResult PaymentConfirmation(int orderHeaderId)
         {
+            if (!ModelState.IsValid)//need 
+            {
+                return View(orderHeaderId);
+            }
+
             OrderHeader orderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == orderHeaderId);
             if (orderHeader.PaymentStatus == SD.PaymentStatusDelayedPayment)
             {
@@ -202,7 +220,7 @@ namespace EcommerceWeb.Areas.Admin.Controllers
 
             if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
             {
-                objOrderHeaders = _unitOfWork.OrderHeader.GetAll(includeProperties: "ApplicationUser").ToList();
+                objOrderHeaders = _unitOfWork.OrderHeader.GetAll(includeProperties: ApplicationUserProperty).ToList();
             }
             else
             {
@@ -211,7 +229,7 @@ namespace EcommerceWeb.Areas.Admin.Controllers
                 var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
                 objOrderHeaders = _unitOfWork.OrderHeader
-                    .GetAll(u => u.ApplicationUserId == userId, includeProperties: "ApplicationUser");
+                    .GetAll(u => u.ApplicationUserId == userId, includeProperties: ApplicationUserProperty);
             }
 
             switch (status)

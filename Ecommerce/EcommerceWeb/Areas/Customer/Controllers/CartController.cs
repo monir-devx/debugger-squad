@@ -168,6 +168,11 @@ namespace EcommerceWeb.Areas.Customer.Controllers
 
 		public IActionResult OrderConfirmation(int id)
 		{
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             OrderHeader orderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == id, includeProperties: "ApplicationUser");
             if (orderHeader.PaymentStatus != SD.PaymentStatusDelayedPayment)
             {
