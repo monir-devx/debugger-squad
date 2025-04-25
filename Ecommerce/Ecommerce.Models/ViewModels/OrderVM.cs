@@ -1,5 +1,4 @@
-﻿using Ecommerce.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Ecommerce.Models.ViewModels
 {
-    public class ShoppingCartVM
+    public class OrderVM
     {
-        public IEnumerable<ShoppingCart> ShoppingCartList { get; set; }
         public OrderHeader OrderHeader { get; set; }
-
+        public IEnumerable<OrderDetail> OrderDetail { get; set; }
     }
 }

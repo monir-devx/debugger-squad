@@ -23,6 +23,41 @@
                 <label for="Email" class="form-label">Email</label>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Name" class="form-control" id="Input_Name" type="text" autocomplete="name" placeholder="Please enter your name." />
+                <label for="Input_Name" class="form-label">Name</label>
+                <span asp-validation-for="Input.Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.PhoneNumber" class="form-control" id="Input_PhoneNumber" type="tel" autocomplete="tel" placeholder="Please enter your phone number." />
+                <label for="Input_PhoneNumber" class="form-label">Phone Number</label>
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.StreetAddress" class="form-control" id="Input_StreetAddress" type="text" autocomplete="address-line1" placeholder="Please enter your street address." />
+                <label for="Input_StreetAddress" class="form-label">Street Address</label>
+                <span asp-validation-for="Input.StreetAddress" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.City" class="form-control" id="Input_City" type="text" autocomplete="address-level2" placeholder="Please enter your city." />
+                <label for="Input_City" class="form-label">City</label>
+                <span asp-validation-for="Input.City" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.State" class="form-control" id="Input_State" type="text" autocomplete="address-level1" placeholder="Please enter your state." />
+                <label for="Input_State" class="form-label">State</label>
+                <span asp-validation-for="Input.State" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.PostalCode" class="form-control" id="Input_PostalCode" type="text" autocomplete="postal-code" placeholder="Please enter your postal code." />
+                <label for="Input_PostalCode" class="form-label">Postal Code</label>
+                <span asp-validation-for="Input.PostalCode" class="text-danger"></span>
+            </div>
             <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>
