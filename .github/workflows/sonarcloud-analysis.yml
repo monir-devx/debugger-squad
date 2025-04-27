@@ -35,7 +35,7 @@ jobs:
         run: dotnet tool install --global dotnet-sonarscanner
 
       - name: Restore project dependencies
-        run: dotnet restore Ecommerce.sln
+        run: dotnet restore Ecommerce/Ecommerce.sln
 
       - name: Start SonarCloud analysis
         env:
@@ -47,12 +47,12 @@ jobs:
             /o:"learnathon-by-geeky-solutions" \
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.host.url="https://sonarcloud.io" \
-            /d:sonar.sources="." \
+            /d:sonar.sources="Ecommerce" \
             /d:sonar.exclusions="**/bin/**,**/obj/**,**/*.Designer.cs,**/Migrations/**,**/*.css,**/*.cshtml,**/*.cshtml.cs" \
             /d:sonar.sourceEncoding="UTF-8"
 
       - name: Build the solution
-        run: dotnet build Ecommerce.sln --no-restore --configuration Release --no-incremental
+        run: dotnet build Ecommerce/Ecommerce.sln --no-restore --configuration Release --no-incremental
 
       - name: End SonarCloud analysis
         env:
