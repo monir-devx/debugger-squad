@@ -48,7 +48,7 @@ jobs:
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.sources="Ecommerce" \
-            /d:sonar.exclusions="**/bin/**,**/obj/**,**/*.Designer.cs,**/Migrations/**,**/*.css,**/*.cshtml,**/*.cshtml.cs" \
+            /d:sonar.exclusions="**/bin/**,**/obj/**,**/*.Designer.cs,**/Migrations/**,**/*.css,**/*.cshtml" \
             /d:sonar.sourceEncoding="UTF-8"
 
       - name: Build the solution
