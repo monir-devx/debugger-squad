@@ -50,61 +50,12 @@ namespace EcommerceWeb.Areas.Admin.Controllers
             }
             
         }
+
         [HttpPost]
-        public IActionResult Upsert(ProductVM productVM, IFormFile? file)
+        public IActionResult Upsert(ProductVM productVM, List<IFormFile> files)
         {
             if (ModelState.IsValid)
             {
-                string wwwRootPath = _webHostEnvironment.WebRootPath;
-                string targetDirectory = Path.Combine(wwwRootPath, @"images\product");
-
-                // Ensure target directory ends with a directory separator
-                if (!targetDirectory.EndsWith(Path.DirectorySeparatorChar.ToString()))
-                {
-                    targetDirectory += Path.DirectorySeparatorChar;
-                }
-
-                if (file != null)
-                {
-                    // Generate a unique file name for the uploaded image
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-
-                    //// Handle old image deletion securely
-                    //if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
-                    //{
-                    //    string oldImagePath = Path.Combine(wwwRootPath, productVM.Product.ImageUrl.TrimStart('\\'));
-
-                    //    // Resolve full path and validate it
-                    //    string canonicalOldPath = Path.GetFullPath(oldImagePath);
-
-                    //    // Ensure the old image path is inside the target directory
-                    //    if (canonicalOldPath.StartsWith(targetDirectory, StringComparison.Ordinal))
-                    //    {
-                    //        if (System.IO.File.Exists(canonicalOldPath))
-                    //        {
-                    //            System.IO.File.Delete(canonicalOldPath);
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        // Log or throw an exception if the old path is outside the target directory
-                    //        TempData["error"] = "The image path is invalid.";
-                    //        return View(productVM);
-                    //    }
-                    //}
-
-                    //// Save the new image file securely
-                    //string newImagePath = Path.Combine(targetDirectory, fileName);
-                    //using (var fileStream = new FileStream(newImagePath, FileMode.Create))
-                    //{
-                    //    file.CopyTo(fileStream);
-                    //}
-
-                    //// Store the relative image URL
-                    //productVM.Product.ImageUrl = Path.Combine(@"\images\product", fileName);
-                }
-
-                // Add or update the product in the database
                 if (productVM.Product.Id == 0)
                 {
                     _unitOfWork.Product.Add(productVM.Product);
@@ -113,13 +64,49 @@ namespace EcommerceWeb.Areas.Admin.Controllers
                 {
                     _unitOfWork.Product.Update(productVM.Product);
                 }
+
                 _unitOfWork.Save();
-                TempData["success"] = "Product created successfully";
+
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                if (files != null)
+                {
+                    foreach (IFormFile file in files)
+                    {
+                        string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                        string productPath = @"images\products\product-" + productVM.Product.Id;
+                        string finalPath = Path.Combine(wwwRootPath, productPath);
+
+                        if (!Directory.Exists(finalPath))
+                            Directory.CreateDirectory(finalPath);
+
+                        using (var fileStream = new FileStream(Path.Combine(finalPath, fileName), FileMode.Create))
+                        {
+                            file.CopyTo(fileStream);
+                        }
+
+                        ProductImage productImage = new()
+                        {
+                            ImageUrl = @"\" + productPath + @"\" + fileName,
+                            ProductId = productVM.Product.Id,
+                        };
+
+                        if (productVM.Product.ProductImages == null)
+                            productVM.Product.ProductImages = new List<ProductImage>();
+
+                        productVM.Product.ProductImages.Add(productImage);
+
+                    }
+
+                    _unitOfWork.Product.Update(productVM.Product);
+                    _unitOfWork.Save();
+                }
+
+                TempData["success"] = "Product created/updated successfully";
+
                 return RedirectToAction("Index");
             }
             else
             {
-                // Reload the category list if the model validation fails
                 productVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.Name,
