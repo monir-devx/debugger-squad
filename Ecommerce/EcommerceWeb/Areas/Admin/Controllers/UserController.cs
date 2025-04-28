@@ -31,6 +31,11 @@ namespace EcommerceWeb.Areas.Admin.Controllers
 
         public IActionResult RoleManagment(string userId)
         {
+            if (string.IsNullOrEmpty(userId))
+            {
+                return NotFound();
+            }
+
             var userRole = _db.UserRoles.FirstOrDefault(u => u.UserId == userId);
             if (userRole == null) return NotFound();
 
@@ -94,7 +99,7 @@ namespace EcommerceWeb.Areas.Admin.Controllers
                 _db.SaveChanges();
 
                 _userManager.RemoveFromRoleAsync(applicationUser, oldRole).GetAwaiter().GetResult();
-                _userManager.AddToRoleAsync(applicationUser, roleManagmentVM.ApplicationUser.Role).GetAwaiter().GetResult();
+                _userManager.AddToRoleAsync(applicationUser, roleManagmentVM.ApplicationUser.Role!).GetAwaiter().GetResult();
             }
 
             return RedirectToAction("Index");
