@@ -15,6 +15,7 @@ namespace Ecommerce.DataAccess.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<OrderHeader> OrderHeaders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
@@ -53,8 +54,7 @@ namespace Ecommerce.DataAccess.Data
                     Price = 90,
                     Price50 = 85,
                     Price100 = 80,
-                    CategoryId = 1,
-                    ImageUrl = ""
+                    CategoryId = 1
                 }
                 //Discarding the repeated codes only for avoiding the "code duplication" alert in sonar cloud analysis.
                 //After seeding database by using migration, we don't need this code for now (used only for seeding purposes)
