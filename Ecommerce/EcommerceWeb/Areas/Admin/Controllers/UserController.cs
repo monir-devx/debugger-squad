@@ -72,7 +72,7 @@ namespace EcommerceWeb.Areas.Admin.Controllers
             ApplicationUser applicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == roleManagmentVM.ApplicationUser.Id);
 
 
-            if (!(roleManagmentVM.ApplicationUser.Role == oldRole))
+            if (roleManagmentVM.ApplicationUser.Role != oldRole)
             {
                 //a role was updated
 

@@ -12,7 +12,7 @@ namespace Ecommerce.DataAccess.Repository
 {
     public class ProductImageRepository : Repository<ProductImage>, IProductImageRepository
     {
-        private ApplicationDbContext _db;
+        private readonly ApplicationDbContext _db;
         public ProductImageRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
