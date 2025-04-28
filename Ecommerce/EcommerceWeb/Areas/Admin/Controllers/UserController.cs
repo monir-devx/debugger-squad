@@ -31,12 +31,15 @@ namespace EcommerceWeb.Areas.Admin.Controllers
 
         public IActionResult RoleManagment(string userId)
         {
+            var userRole = _db.UserRoles.FirstOrDefault(u => u.UserId == userId);
+            if (userRole == null) return NotFound();
 
-            string RoleID = _db.UserRoles.FirstOrDefault(u => u.UserId == userId).RoleId;
-
-            RoleManagmentVM RoleVM = new RoleManagmentVM()
+            var applicationUser = _db.ApplicationUsers.Include(u => u.Company).FirstOrDefault(u => u.Id == userId);
+            if (applicationUser == null) return NotFound();
+ 
+            RoleManagmentVM roleVM = new RoleManagmentVM()
             {
-                ApplicationUser = _db.ApplicationUsers.Include(u => u.Company).FirstOrDefault(u => u.Id == userId),
+                ApplicationUser = applicationUser,
                 RoleList = _db.Roles.Select(i => new SelectListItem
                 {
                     Text = i.Name,
@@ -49,38 +52,54 @@ namespace EcommerceWeb.Areas.Admin.Controllers
                 }),
             };
 
-            RoleVM.ApplicationUser.Role = _db.Roles.FirstOrDefault(u => u.Id == RoleID).Name;
-            return View(RoleVM);
+            var role = _db.Roles.FirstOrDefault(u => u.Id == userRole.RoleId);
+            if (role == null || string.IsNullOrEmpty(role.Name)) return NotFound();
+
+            roleVM.ApplicationUser.Role = role.Name;
+
+            return View(roleVM);
         }
 
         [HttpPost]
         public IActionResult RoleManagment(RoleManagmentVM roleManagmentVM)
         {
-
-            string RoleID = _db.UserRoles.FirstOrDefault(u => u.UserId == roleManagmentVM.ApplicationUser.Id).RoleId;
-            string oldRole = _db.Roles.FirstOrDefault(u => u.Id == RoleID).Name;
-
-            if (!(roleManagmentVM.ApplicationUser.Role == oldRole))
+            if (!ModelState.IsValid)
             {
-                //a role was updated
-                ApplicationUser applicationUser = _db.ApplicationUsers.FirstOrDefault(u => u.Id == roleManagmentVM.ApplicationUser.Id);
+                return View(roleManagmentVM);
+            }
+
+            var userRole = _db.UserRoles.FirstOrDefault(u => u.UserId == roleManagmentVM.ApplicationUser.Id);
+            if (userRole == null) return NotFound();
+
+            var role = _db.Roles.FirstOrDefault(u => u.Id == userRole.RoleId);
+            if (role == null || string.IsNullOrEmpty(role.Name)) return NotFound();
+
+            string oldRole = role.Name;
+
+            if (roleManagmentVM.ApplicationUser.Role != oldRole)
+            {
+                var applicationUser = _db.ApplicationUsers.FirstOrDefault(u => u.Id == roleManagmentVM.ApplicationUser.Id);
+                if (applicationUser == null) return NotFound();
+
                 if (roleManagmentVM.ApplicationUser.Role == SD.Role_Company)
                 {
                     applicationUser.CompanyId = roleManagmentVM.ApplicationUser.CompanyId;
                 }
+
                 if (oldRole == SD.Role_Company)
                 {
                     applicationUser.CompanyId = null;
                 }
+
                 _db.SaveChanges();
 
                 _userManager.RemoveFromRoleAsync(applicationUser, oldRole).GetAwaiter().GetResult();
                 _userManager.AddToRoleAsync(applicationUser, roleManagmentVM.ApplicationUser.Role).GetAwaiter().GetResult();
-
             }
 
             return RedirectToAction("Index");
         }
+
 
         #region API CALLS
 
@@ -94,8 +113,15 @@ namespace EcommerceWeb.Areas.Admin.Controllers
 
             foreach (var user in objUserList)
             {
-                var roleId = userRoles.FirstOrDefault(u => u.UserId == user.Id).RoleId;
-                user.Role = roles.FirstOrDefault(u => u.Id == roleId).Name;
+                var userRole = userRoles.FirstOrDefault(u => u.UserId == user.Id);
+                if (userRole != null)
+                {
+                    var role = roles.FirstOrDefault(u => u.Id == userRole.RoleId);
+                    if (role != null && !string.IsNullOrEmpty(role.Name))
+                    {
+                        user.Role = role.Name;
+                    }
+                }
 
                 if (user.Company == null)
                 {

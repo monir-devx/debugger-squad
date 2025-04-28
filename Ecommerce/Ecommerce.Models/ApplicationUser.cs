@@ -24,6 +24,6 @@ namespace Ecommerce.Models
         [ValidateNever]
         public Company? Company { get; set; }
         [NotMapped]
-        public string Role { get; set; }
+        public string? Role { get; set; }
     }
 }

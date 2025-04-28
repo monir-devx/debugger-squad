@@ -1,4 +1,4 @@
-﻿var dataTable;
+﻿let dataTable;
 
 $(document).ready(function () {
     loadDataTable();
@@ -16,8 +16,8 @@ function loadDataTable() {
             {
                 data: { id: "id", lockoutEnd: "lockoutEnd" },
                 "render": function (data) {
-                    var today = new Date().getTime();
-                    var lockout = new Date(data.lockoutEnd).getTime();
+                    let today = new Date().getTime();
+                    let lockout = new Date(data.lockoutEnd).getTime();
 
                     if (lockout > today) {
                         return `
