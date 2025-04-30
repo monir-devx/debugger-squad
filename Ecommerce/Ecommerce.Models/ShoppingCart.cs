@@ -17,14 +17,14 @@ namespace Ecommerce.Models
         public int ProductId { get; set; }
         [ForeignKey("ProductId")]
         [ValidateNever]
-        public Product Product { get; set; }
+        public Product Product { get; set; } = null!;
         [Range(1, 1000, ErrorMessage = "Please enter a value between 1 and 1000")]
         public int Count { get; set; }
         [ValidateNever]
-        public string ApplicationUserId { get; set; }
+        public string ApplicationUserId { get; set; } = null!;
         [ForeignKey("ApplicationUserId")]
         [ValidateNever]
-        public ApplicationUser ApplicationUser { get; set; }
+        public ApplicationUser ApplicationUser { get; set; } = null!;
 
         [NotMapped]
         public double Price { get; set; }

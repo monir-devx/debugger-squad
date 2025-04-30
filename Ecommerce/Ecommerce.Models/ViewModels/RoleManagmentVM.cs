@@ -12,7 +12,7 @@ namespace Ecommerce.Models.ViewModels
     [ValidateNever]
     public class RoleManagmentVM
     {
-        public ApplicationUser ApplicationUser { get; set; } = new ApplicationUser();
+        public ApplicationUser? ApplicationUser { get; set; }
         public IEnumerable<SelectListItem> RoleList { get; set; } = new List<SelectListItem>();
         public IEnumerable<SelectListItem> CompanyList { get; set; } = new List<SelectListItem>();
     }
