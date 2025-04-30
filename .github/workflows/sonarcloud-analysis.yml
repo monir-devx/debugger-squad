@@ -31,13 +31,15 @@ jobs:
           java-version: 17
           distribution: "zulu"
 
-      - name: Install SonarCloud scanner
-        run: dotnet tool install --global dotnet-sonarscanner
+      - name: Install SonarCloud scanner and Coverlet
+        run: |
+          dotnet tool install --global dotnet-sonarscanner
+          dotnet tool install --global coverlet.console
 
       - name: Restore project dependencies
         run: dotnet restore Ecommerce/Ecommerce.sln
 
-      - name: Start SonarCloud analysis
+      - name: Begin SonarCloud analysis
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -47,12 +49,28 @@ jobs:
             /o:"learnathon-by-geeky-solutions" \
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.host.url="https://sonarcloud.io" \
+            /d:sonar.cs.opencover.reportsPaths="${{ github.workspace }}/coverage.xml" \
             /d:sonar.sources="Ecommerce" \
+            /d:sonar.tests="Ecommerce" \
+            /d:sonar.test.inclusions="**/Ecommerce.Tests/**/*.cs" \
+            /d:sonar.coverage.exclusions="**/Program.cs,**/Startup.cs" \
             /d:sonar.exclusions="**/bin/**,**/obj/**,**/*.Designer.cs,**/Migrations/**,**/*.css,**/*.cshtml" \
             /d:sonar.sourceEncoding="UTF-8"
 
       - name: Build the solution
         run: dotnet build Ecommerce/Ecommerce.sln --no-restore --configuration Release --no-incremental
+
+      - name: Run tests with coverage
+        run: |
+          coverlet ./Ecommerce.Tests/bin/Release/net8.0/Ecommerce.Tests.dll \
+            --target "dotnet" \
+            --targetargs "test Ecommerce/Ecommerce.sln --no-build --configuration Release" \
+            -f=opencover \
+            -o="${{ github.workspace }}/coverage.xml" \
+            --verbosity detailed
+
+      - name: List coverage file (for debug)
+        run: ls -la ${{ github.workspace }}/coverage.xml
 
       - name: End SonarCloud analysis
         env:
