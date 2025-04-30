@@ -10,7 +10,7 @@ namespace Ecommerce.DataAccess.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private ApplicationDbContext _db;
+        private readonly ApplicationDbContext _db;
         public ICategoryRepository Category { get; private set; }
         public IProductRepository Product { get; private set; }
         public ICompanyRepository Company { get; private set; }

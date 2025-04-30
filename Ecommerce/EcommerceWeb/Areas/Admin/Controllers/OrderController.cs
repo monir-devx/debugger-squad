@@ -115,8 +115,16 @@ namespace EcommerceWeb.Areas.Admin.Controllers
         [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee)]
         public IActionResult CancelOrder()
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
 
             var orderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == OrderVM.OrderHeader.Id);
+            if (orderHeader == null)
+            {
+                return NotFound();
+            }
 
             if (orderHeader.PaymentStatus == SD.PaymentStatusApproved)
             {
