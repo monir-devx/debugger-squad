@@ -60,11 +60,14 @@ jobs:
       - name: Build the solution
         run: dotnet build Ecommerce/Ecommerce.sln --no-restore --configuration Release --no-incremental
 
-      - name: Run tests with coverage
+      - name: Run tests to generate test DLLs
+        run: dotnet test Ecommerce.Tests/Ecommerce.Tests.csproj --no-restore --configuration Release --no-build
+
+      - name: Run coverlet for coverage
         run: |
           coverlet ./Ecommerce.Tests/bin/Release/net8.0/Ecommerce.Tests.dll \
             --target "dotnet" \
-            --targetargs "test Ecommerce/Ecommerce.sln --no-build --configuration Release" \
+            --targetargs "test Ecommerce.Tests/Ecommerce.Tests.csproj --no-restore --no-build --configuration Release" \
             -f=opencover \
             -o="${{ github.workspace }}/coverage.xml" \
             --verbosity detailed
