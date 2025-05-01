@@ -12,6 +12,13 @@ using Ecommerce.DataAccess.DbInitializer;
 var builder = WebApplication.CreateBuilder(args);
 var env = builder.Environment;
 
+// Configure Kestrel to bind to the port from environment variable
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+    serverOptions.ListenAnyIP(Int32.Parse(port));
+});
+
 // Load configuration files: base, environment-specific, and developer-local (optional)
 builder.Configuration
     .SetBasePath(Directory.GetCurrentDirectory())
