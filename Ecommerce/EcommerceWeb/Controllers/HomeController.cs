@@ -13,5 +13,10 @@ namespace EcommerceWeb.Controllers
         {
             return View();
         }
+
+        public IActionResult DataDeletion()
+        {
+            return View();
+        }
     }
 }
