@@ -142,14 +142,14 @@ namespace EcommerceWeb.Areas.Admin.Controllers
                 return Json(new { success = false, message = "Error while Locking/Unlocking" });
             }
 
-            if (objFromDb.LockoutEnd != null && objFromDb.LockoutEnd > DateTime.Now)
+            if (objFromDb.LockoutEnd != null && objFromDb.LockoutEnd > DateTime.UtcNow)
             {
                 //user is currently locked and we need to unlock them
-                objFromDb.LockoutEnd = DateTime.Now;
+                objFromDb.LockoutEnd = DateTime.UtcNow;
             }
             else
             {
-                objFromDb.LockoutEnd = DateTime.Now.AddYears(1000);
+                objFromDb.LockoutEnd = DateTime.UtcNow.AddYears(1000);
             }
             _unitOfWork.ApplicationUser.Update(objFromDb);
             _unitOfWork.Save();

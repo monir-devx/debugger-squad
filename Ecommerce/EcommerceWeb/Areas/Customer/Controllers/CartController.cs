@@ -86,7 +86,7 @@ namespace EcommerceWeb.Areas.Customer.Controllers
 			ShoppingCartVM.ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId,
 				includeProperties: "Product");
 
-			ShoppingCartVM.OrderHeader.OrderDate = System.DateTime.Now;
+			ShoppingCartVM.OrderHeader.OrderDate = System.DateTime.UtcNow;
 			ShoppingCartVM.OrderHeader.ApplicationUserId = userId;
 
 			ApplicationUser applicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
