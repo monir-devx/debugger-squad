@@ -7,17 +7,16 @@ using Ecommerce.Utility;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Stripe;
 using Ecommerce.DataAccess.DbInitializer;
+using System.Globalization;
 
 // Setup builder
 var builder = WebApplication.CreateBuilder(args);
 var env = builder.Environment;
 
-// Configure Kestrel to bind to the port from environment variable
-builder.WebHost.ConfigureKestrel(serverOptions =>
-{
-    var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-    serverOptions.ListenAnyIP(Int32.Parse(port));
-});
+// Set culture to en-US globally to fix currency formatting issue
+var cultureInfo = new CultureInfo("en-US");
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
 // Load configuration files: base, environment-specific, and developer-local (optional)
 builder.Configuration
