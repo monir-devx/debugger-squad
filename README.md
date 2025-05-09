@@ -18,7 +18,7 @@
 
 | 👤 Name     | Naimur Rahman                                | Monir Hossain                                       | Nasif Uz Zaman                                 |
 | ----------- | -------------------------------------------- | --------------------------------------------------- | ---------------------------------------------- |
-| 🎯 Role     | Mentor                                       | Team Leader                                         | Member                                         | 
+| 🎯 Role     | Mentor                                       | Member                                              | Member                                         | 
 | 💻 GitHub   | [Naimurrahman76](https://github.com/Naimurrahman76)      | [monir-devx](https://github.com/monir-devx) | [NasifUzZaman38](https://github.com/NasifUzZaman38)    |
 | 🔗 LinkedIn | [LinkedIn](https://www.linkedin.com/in/naimur76/) | [LinkedIn](https://www.linkedin.com/in/monir-hossain-mbstu/)  | [LinkedIn](https://www.linkedin.com/in/nasif-uz-zaman-30139330a/) |
 
